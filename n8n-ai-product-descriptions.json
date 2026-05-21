@@ -1,0 +1,161 @@
+{
+  "name": "Workflow_1",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3b07c3c5-6117-4915-9bce-8a978e39b59b",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c1f83e92-63de-4414-af0a-2caeb12f91da",
+              "name": "produkt",
+              "value": "Bluetooth Lautsprecher",
+              "type": "string"
+            },
+            {
+              "id": "d725564b-5a6d-4550-8bcf-c9877286f399",
+              "name": "zielgruppe",
+              "value": "Techno Fans",
+              "type": "string"
+            },
+            {
+              "id": "b305b44f-7766-4c38-a360-1998d990012e",
+              "name": "besonderheit",
+              "value": "Starker Bass und Akkulaufzeit",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e5b0c320-77c3-44ba-9db8-76e3cde55d00",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Schreibe eine kurze professionelle Produktbeschreibung für folgendes Produkt: \n{{ $json.produkt }}\n{{ $json.zielgruppe }}\n{{ $json.besonderheit }}\n\nDer text soll verkaufsstark aber nicht übertrieben klingen. "
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "74b2a418-37b2-4b7a-acfd-a36a39dbaa7f",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "MsRIbfuhwTXSGGDD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ad743ed9-8662-4d0f-81b9-4b9accd558dd",
+              "name": "produkt",
+              "value": "={{ $('Edit Fields').item.json.produkt }}",
+              "type": "string"
+            },
+            {
+              "id": "8481ea8a-1f21-495b-8b62-a8eb2a31f2b6",
+              "name": "ki_text",
+              "value": "={{ $json.output[0].content[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        0
+      ],
+      "id": "057ee169-a965-43fe-9f82-795cc7e1cc59",
+      "name": "Edit Fields1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ac334d73-c49a-4df6-80f9-37a1584e23c1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "468ae4f5f98c985f2a7af6d253ddf8d7b0ef2e8bf89a40071f4143b39dae28d3"
+  },
+  "id": "M61H5m68uWkqAuMz",
+  "tags": []
+}
